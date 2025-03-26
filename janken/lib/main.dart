@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'じゃんけんゲーム'),
     );
   }
 }
@@ -29,6 +29,38 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void showRobotResult() {
+    // じゃんけんの結果を表示する処理
+    List<String> hands = ['グー', 'チョキ', 'パー'];
+    hands.shuffle();
+    String hand = hands[0];
+    Image image = Image.asset('assets/janken_gu.png');
+    if (hand == 'グー') {
+      image = Image.asset('assets/janken_gu.png');
+    } else if (hand == 'チョキ') {
+      image = Image.asset('assets/janken_choki.png');
+    } else {
+      image = Image.asset('assets/janken_pa.png');
+    }
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('ロボット君'),
+          content: image,
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +69,14 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-      )
+        child: ElevatedButton(
+          onPressed: () {
+            // ボタンが押された時の処理
+            showRobotResult();
+          },
+          child: Text('じゃんけんをする'),
+        ),
+      ),
     );
   }
 }
